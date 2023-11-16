@@ -1,0 +1,75 @@
+﻿@model List<DAL.Entities.Contact>
+@{ ViewData["Title"] = "Home Page"; }
+
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactModalLabel">Contact Details</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" onclick="closeModalPopup()"></button>
+            </div>
+            <div class="modal-body">
+                <form id="contactForm" class="needs-validation" novalidate>
+                    <input type="hidden" id="contactId" name="contactId" value="">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                        <div class="invalid-feedback">Invalid name. It contains only letters and must begin with a capital letter.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobilePhone">Mobile Phone</label>
+                        <div class="input-group has-validation">
+                            <div class="input-group-text"><img src="https://images.emojiterra.com/twitter/v13.1/512px/1f1e7-1f1fe.png" style="width: 20px" alt="BY flag"></div>
+                            <input type="tel" class="form-control" id="mobilePhone" required>
+                            <div class="invalid-feedback">Invalid phone. Example: +375(12)345-67-89, +375123456789.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" class="form-control" id="jobTitle" required>
+                        <div class="invalid-feedback">Job title cannot be blank</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate">Birth Date</label>
+                        <input type="date" class="form-control" id="birthDate" required>
+                        <div class="invalid-feedback">Birth Date cannot be blank or later than the current time</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button form="contactForm" type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col text-end">
+        <button type="button" class="btn btn-primary" onclick="addContact()">Create new contact</button>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th>Name</th>
+        <th>Mobile Phone</th>
+        <th>Job Title</th>
+        <th>Birth Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="tableBody">
+    @foreach (var contact in Model)
+    {
+        <tr id="contact-row-@contact.Id">
+            <td>@contact.Name</td>
+            <td>@contact.MobilePhone</td>
+            <td>@contact.JobTitle</td>
+            <td>@contact.BirthDate?.ToShortDateString()</td>
+            <td>
+                <button class="btn btn-primary" onclick="editContact(@contact.Id)">Edit</button>
+                <button class="btn btn-danger" onclick="deleteContact(@contact.Id)">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
